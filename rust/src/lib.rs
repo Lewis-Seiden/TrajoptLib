@@ -44,8 +44,10 @@ mod ffi {
 
         type SwervePathBuilderImpl;
 
+        fn cancel_all(self: Pin<&mut SwervePathBuilderImpl>);
         fn set_drivetrain(self: Pin<&mut SwervePathBuilderImpl>, drivetrain: &SwerveDrivetrain);
         fn set_bumpers(self: Pin<&mut SwervePathBuilderImpl>, length: f64, width: f64);
+        fn set_control_interval_counts(self: Pin<&mut SwervePathBuilderImpl>, counts: Vec<usize>);
 
         fn pose_wpt(
             self: Pin<&mut SwervePathBuilderImpl>,
@@ -166,6 +168,10 @@ impl SwervePathBuilder {
 
     pub fn set_bumpers(&mut self, length: f64, width: f64) {
         crate::ffi::SwervePathBuilderImpl::set_bumpers(self.path.pin_mut(), length, width);
+    }
+
+    pub fn set_control_interval_counts(&mut self, counts: Vec<usize>) {
+        crate::ffi::SwervePathBuilderImpl::set_control_interval_counts(self.path.pin_mut(), counts);
     }
 
     pub fn pose_wpt(&mut self, idx: usize, x: f64, y: f64, heading: f64) {
@@ -337,6 +343,10 @@ impl SwervePathBuilder {
             Ok(traj) => Ok(traj),
             Err(msg) => Err(msg.what().to_string()),
         }
+    }
+
+    pub fn cancel_all(&mut self) {
+        crate::ffi::SwervePathBuilderImpl::cancel_all(self.path.pin_mut());
     }
 }
 
