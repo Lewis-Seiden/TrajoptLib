@@ -136,6 +136,7 @@ mod ffi {
             to_idx: usize,
             heading: f64,
         );
+        fn sgmt_center_keep_in(self: Pin<&mut SwervePathBuilderImpl>, from_idx: usize, to_idx: usize, x1: f64, y1: f64, x2: f64, y2: f64);
 
         fn sgmt_circle_obstacle(
             self: Pin<&mut SwervePathBuilderImpl>,
@@ -332,6 +333,10 @@ impl SwervePathBuilder {
             to_idx,
             heading,
         );
+    }
+
+    pub fn sgmt_center_keep_in(&mut self, from_idx: usize, to_idx: usize, x1: f64, y1: f64, x2: f64, y2: f64) {
+        crate::ffi::SwervePathBuilderImpl::sgmt_center_keep_in(self.path.pin_mut(), from_idx, to_idx, x1, y1, x2, y2);
     }
 
     pub fn sgmt_circle_obstacle(

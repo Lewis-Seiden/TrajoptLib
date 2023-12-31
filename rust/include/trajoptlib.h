@@ -48,6 +48,7 @@ class SwervePathBuilderImpl {
   void sgmt_x(size_t from_idx, size_t to_idx, double x);
   void sgmt_y(size_t from_idx, size_t to_idx, double y);
   void sgmt_heading(size_t from_idx, size_t to_idx, double heading);
+  void sgmt_center_keep_in(size_t from_idx, size_t to_idx, double x1, double y1, double x2, double y2);
 
   void sgmt_circle_obstacle(size_t from_idx, size_t to_idx, double x, double y,
                             double radius);

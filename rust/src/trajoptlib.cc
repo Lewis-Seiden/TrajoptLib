@@ -219,6 +219,15 @@ void SwervePathBuilderImpl::sgmt_heading(size_t from_idx, size_t to_idx, double 
   path.SgmtConstraint(from_idx, to_idx, trajopt::HeadingConstraint{heading});
 }
 
+void SwervePathBuilderImpl::sgmt_center_keep_in(size_t from_idx, size_t to_idx, double x1, double y1, double x2, double y2) {
+  path.SgmtCenterKeepIn(from_idx, to_idx, 
+    trajopt::RectangularSet2d{
+      trajopt::IntervalSet1d(x1, x2),
+      trajopt::IntervalSet1d(y1, y2)
+    }
+  );
+}
+
 void SwervePathBuilderImpl::sgmt_circle_obstacle(size_t from_idx, size_t to_idx, double x, double y, double radius) {
   auto obstacle = trajopt::Obstacle{
     .safetyDistance = radius,
