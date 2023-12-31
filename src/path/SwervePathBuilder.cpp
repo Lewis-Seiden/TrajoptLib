@@ -99,6 +99,10 @@ void SwervePathBuilder::WptZeroAngularVelocity(size_t idx) {
   WptConstraint(idx, AngularVelocityConstraint{0.0});
 }
 
+void SwervePathBuilder::WptCenterKeepIn(size_t idx, Set2d zone) {
+  WptConstraint(idx, TranslationConstraint{zone});
+}
+
 void SwervePathBuilder::SgmtVelocityDirection(size_t fromIdx, size_t toIdx,
                                               double angle, bool includeWpts) {
   SgmtConstraint(
@@ -121,6 +125,10 @@ void SwervePathBuilder::SgmtVelocityMagnitude(size_t fromIdx, size_t toIdx,
 void SwervePathBuilder::SgmtZeroAngularVelocity(size_t fromIdx, size_t toIdx,
                                                 bool includeWpts) {
   SgmtConstraint(fromIdx, toIdx, AngularVelocityConstraint{0.0}, includeWpts);
+}
+
+void SwervePathBuilder::SgmtCenterKeepIn(size_t fromIdx, size_t toIdx, Set2d zone) {
+  SgmtConstraint(fromIdx, toIdx, TranslationConstraint{zone});
 }
 
 void SwervePathBuilder::WptConstraint(size_t idx,

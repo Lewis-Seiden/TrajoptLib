@@ -101,6 +101,7 @@ mod ffi {
         fn wpt_x(self: Pin<&mut SwervePathBuilderImpl>, idx: usize, x: f64);
         fn wpt_y(self: Pin<&mut SwervePathBuilderImpl>, idx: usize, y: f64);
         fn wpt_heading(self: Pin<&mut SwervePathBuilderImpl>, idx: usize, heading: f64);
+        fn wpt_center_keep_in(self: Pin<&mut SwervePathBuilderImpl>, idx: usize, x1: f64, y1: f64, x2: f64, y2: f64);
 
         fn sgmt_linear_velocity_direction(
             self: Pin<&mut SwervePathBuilderImpl>,
@@ -250,6 +251,10 @@ impl SwervePathBuilder {
             idx,
             angular_velocity,
         );
+    }
+
+    pub fn wpt_center_keep_in(&mut self, idx: usize, x1: f64, y1: f64, x2: f64, y2: f64) {
+        crate::ffi::SwervePathBuilderImpl::wpt_center_keep_in(self.path.pin_mut(), idx, x1, y1, x2, y2);
     }
 
     pub fn wpt_x(&mut self, idx: usize, x: f64) {

@@ -169,6 +169,15 @@ void SwervePathBuilderImpl::wpt_heading(size_t idx, double heading) {
   });
 }
 
+void SwervePathBuilderImpl::wpt_center_keep_in(size_t idx, double x1, double y1, double x2, double y2) {
+  path.WptCenterKeepIn(idx, 
+    trajopt::RectangularSet2d{
+      trajopt::IntervalSet1d(x1, x2),
+      trajopt::IntervalSet1d(y1, y2)
+    }
+  );
+}
+
 void SwervePathBuilderImpl::sgmt_linear_velocity_direction(size_t from_idx, size_t to_idx, double angle) {
   path.SgmtVelocityDirection(from_idx, to_idx, angle);
 }

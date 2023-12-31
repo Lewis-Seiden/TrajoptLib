@@ -35,6 +35,7 @@ class SwervePathBuilderImpl {
   void wpt_x(size_t idx, double x);
   void wpt_y(size_t idx, double y);
   void wpt_heading(size_t idx, double heading);
+  void wpt_center_keep_in(size_t idx, double x1, double y1, double x2, double y2);
 
   void sgmt_linear_velocity_direction(size_t from_idx, size_t to_idx,
                                       double angle);
