@@ -103,6 +103,18 @@ void SwervePathBuilder::WptCenterKeepIn(size_t idx, Set2d zone) {
   WptConstraint(idx, TranslationConstraint{zone});
 }
 
+void SwervePathBuilder::WptBumpersKeepIn(size_t idx, Set2d zone) {
+  for (auto& _bumpers : bumpers) {
+    std::vector<HolonomicConstraint> constraints;
+    for (auto& corner : _bumpers.points) {
+      constraints.emplace_back(TranslationConstraint{zone, corner.x, corner.y});
+    }
+    for (auto& constraint : constraints) {
+      WptConstraint(idx, constraint);
+    }
+  }
+}
+
 void SwervePathBuilder::SgmtVelocityDirection(size_t fromIdx, size_t toIdx,
                                               double angle, bool includeWpts) {
   SgmtConstraint(
@@ -129,6 +141,18 @@ void SwervePathBuilder::SgmtZeroAngularVelocity(size_t fromIdx, size_t toIdx,
 
 void SwervePathBuilder::SgmtCenterKeepIn(size_t fromIdx, size_t toIdx, Set2d zone) {
   SgmtConstraint(fromIdx, toIdx, TranslationConstraint{zone});
+}
+
+void SwervePathBuilder::SgmtBumpersKeepIn(size_t fromIdx, size_t toIdx, Set2d zone) {
+  for (auto& _bumpers : bumpers) {
+    std::vector<HolonomicConstraint> constraints;
+    for (auto& corner : _bumpers.points) {
+      constraints.emplace_back(TranslationConstraint{zone, corner.x, corner.y});
+    }
+    for (auto& constraint : constraints) {
+      SgmtConstraint(fromIdx, toIdx, constraint);
+    }
+  }
 }
 
 void SwervePathBuilder::WptConstraint(size_t idx,

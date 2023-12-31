@@ -14,11 +14,15 @@
 namespace trajopt {
 
 /**
- * Translation constraint.
+ * Constrains a point on the robot to a Set2d of the field.
  */
 struct TRAJOPT_DLLEXPORT TranslationConstraint {
   /// Translation bound.
   Set2d translationBound;
+  /// robot point x
+  double robotPointX { 0.0 };
+  /// robot point y
+  double robotPointY { 0.0 };
 
   /**
    * Returns an error if the given position doesn't satisfy the constraint.
@@ -31,7 +35,7 @@ struct TRAJOPT_DLLEXPORT TranslationConstraint {
       double x, double y, const SolutionTolerances& tolerances) const noexcept;
 };
 
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(TranslationConstraint, translationBound)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(TranslationConstraint, translationBound, robotPointX, robotPointY)
 
 }  // namespace trajopt
 

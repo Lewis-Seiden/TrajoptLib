@@ -13,7 +13,7 @@ namespace trajopt {
 
 std::optional<SolutionError> TranslationConstraint::CheckTranslation(
     double x, double y, const SolutionTolerances& tolerances) const noexcept {
-  auto check = CheckVector(translationBound, x, y, tolerances);
+  auto check = CheckVector(translationBound, x + robotPointX, y + robotPointY, tolerances);
   if (check.has_value()) {
     return SolutionError{
         fmt::format("translation = (x, y) = ({}, {}): x-component: ", x, y,

@@ -136,6 +136,11 @@ class TRAJOPT_DLLEXPORT SwervePathBuilder {
   */
   void WptCenterKeepIn(size_t idx, Set2d zone);
 
+/**
+ * 
+*/
+  void WptBumpersKeepIn(size_t idx, Set2d zone);
+
   /**
    * Specify the required direction of the velocity vector of the robot
    * for the continuum of robot state between two waypoints.
@@ -181,6 +186,11 @@ class TRAJOPT_DLLEXPORT SwervePathBuilder {
      * 
     */
     void SgmtCenterKeepIn(size_t fromIdx, size_t toIdx, Set2d zone);
+
+/**
+ * 
+*/
+    void SgmtBumpersKeepIn(size_t fromIdx, size_t toIdx, Set2d zone);
 
   /**
    * Apply a custom holonomic constraint at a waypoint

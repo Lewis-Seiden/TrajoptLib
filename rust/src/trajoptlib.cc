@@ -178,6 +178,15 @@ void SwervePathBuilderImpl::wpt_center_keep_in(size_t idx, double x1, double y1,
   );
 }
 
+void SwervePathBuilderImpl::wpt_bumpers_keep_in(size_t idx, double x1, double y1, double x2, double y2) {
+  path.WptBumpersKeepIn(idx, 
+    trajopt::RectangularSet2d{
+      trajopt::IntervalSet1d(x1, x2),
+      trajopt::IntervalSet1d(y1, y2)
+    }
+  );
+}
+
 void SwervePathBuilderImpl::sgmt_linear_velocity_direction(size_t from_idx, size_t to_idx, double angle) {
   path.SgmtVelocityDirection(from_idx, to_idx, angle);
 }
@@ -221,6 +230,15 @@ void SwervePathBuilderImpl::sgmt_heading(size_t from_idx, size_t to_idx, double 
 
 void SwervePathBuilderImpl::sgmt_center_keep_in(size_t from_idx, size_t to_idx, double x1, double y1, double x2, double y2) {
   path.SgmtCenterKeepIn(from_idx, to_idx, 
+    trajopt::RectangularSet2d{
+      trajopt::IntervalSet1d(x1, x2),
+      trajopt::IntervalSet1d(y1, y2)
+    }
+  );
+}
+
+void SwervePathBuilderImpl::sgmt_bumpers_keep_in(size_t from_idx, size_t to_idx, double x1, double y1, double x2, double y2) {
+  path.SgmtBumpersKeepIn(from_idx, to_idx, 
     trajopt::RectangularSet2d{
       trajopt::IntervalSet1d(x1, x2),
       trajopt::IntervalSet1d(y1, y2)
