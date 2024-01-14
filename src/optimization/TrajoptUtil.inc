@@ -350,14 +350,14 @@ HolonomicSolution GenerateLinearInitialGuess(
   }
 
   // generate initial velocity guess
-  for (size_t i = 1; i < &initialGuess.x.size; i++) {
+  for (size_t i = 1; i < initialGuess.x.size(); i++) {
     initialGuess.vx.push_back((initialGuess.x[i] - initialGuess.x[i - 1]) / initialGuess.dt[i]);
     initialGuess.vy.push_back((initialGuess.y[i] - initialGuess.y[i - 1]) / initialGuess.dt[i]);
     initialGuess.omega.push_back((initialGuess.theta[i] - initialGuess.theta[i - 1]) / initialGuess.dt[i]);
   }
 
   // generate initial acceleration guess
-  for (size_t i = 1; i < &initialGuess.x.size; i++) {
+  for (size_t i = 1; i < initialGuess.x.size(); i++) {
     initialGuess.ax.push_back((initialGuess.ax[i] - initialGuess.ax[i - 1]) / initialGuess.dt[i]);
     initialGuess.ay.push_back((initialGuess.ay[i] - initialGuess.ay[i - 1]) / initialGuess.dt[i]);
     initialGuess.alpha.push_back((initialGuess.omega[i] - initialGuess.omega[i - 1]) / initialGuess.dt[i]);
