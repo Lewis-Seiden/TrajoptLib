@@ -91,7 +91,7 @@ void ApplyConstraint(Opti& opti, const Expr& x, const Expr& y,
 inline std::vector<double> Linspace(double startValue, double endValue,
                                     size_t numSamples);
 
-inline Solution GenerateLinearInitialGuess(
+inline HolonomicSolution GenerateLinearInitialGuess(
     const std::vector<std::vector<InitialGuessPoint>>& initialGuessPoints,
     const std::vector<size_t> controlIntervalCounts);
 

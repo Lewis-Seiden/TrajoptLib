@@ -271,18 +271,32 @@ inline void append_vector(std::vector<T>& base,
   base.insert(base.end(), newItems.begin(), newItems.end());
 }
 
-Solution GenerateLinearInitialGuess(
+HolonomicSolution GenerateLinearInitialGuess(
     const std::vector<std::vector<InitialGuessPoint>>& initialGuessPoints,
     const std::vector<size_t> controlIntervalCounts) {
   size_t wptCnt = controlIntervalCounts.size() + 1;
   size_t sampTot = GetIdx(controlIntervalCounts, wptCnt, 0);
-  Solution initialGuess{};
+  HolonomicSolution initialGuess{};
+
   initialGuess.x.reserve(sampTot);
   initialGuess.y.reserve(sampTot);
   initialGuess.theta.reserve(sampTot);
+  initialGuess.vx.reserve(sampTot);
+  initialGuess.vy.reserve(sampTot);
+  initialGuess.omega.reserve(sampTot);
+  initialGuess.ax.reserve(sampTot);
+  initialGuess.ay.reserve(sampTot);
+  initialGuess.alpha.reserve(sampTot);
+
   initialGuess.x.push_back(initialGuessPoints.front().front().x);
   initialGuess.y.push_back(initialGuessPoints.front().front().y);
   initialGuess.theta.push_back(initialGuessPoints.front().front().heading);
+  initialGuess.vx.push_back(0.0);
+  initialGuess.vy.push_back(0.0);
+  initialGuess.omega.push_back(0.0);
+  initialGuess.ax.push_back(0.0);
+  initialGuess.ay.push_back(0.0);
+  initialGuess.alpha.push_back(0.0);
   for (size_t wptIdx = 1; wptIdx < wptCnt; wptIdx++) {
     size_t N_sgmt = controlIntervalCounts.at(wptIdx - 1);
     size_t guessPointCount = initialGuessPoints.at(wptIdx).size();
@@ -334,6 +348,21 @@ Solution GenerateLinearInitialGuess(
               initialGuessPoints.at(wptIdx).back().heading, N_lastGuessSgmt));
     }
   }
+
+  // generate initial velocity guess
+  for (size_t i = 1; i < initialGuess.x.size; i++) {
+    initialGuess.vx.push_back((initialGuess.x[i] - initialGuess.x[i - 1]) / initialGuess.dt[i]);
+    initialGuess.vy.push_back((initialGuess.y[i] - initialGuess.y[i - 1]) / initialGuess.dt[i]);
+    initialGuess.omega.push_back((initialGuess.theta[i] - initialGuess.theta[i - 1]) / initialGuess.dt[i]);
+  }
+
+  // generate initial acceleration guess
+  for (size_t i = 1; i < initialGuess.x.size; i++) {
+    initialGuess.ax.push_back((initialGuess.ax[i] - initialGuess.ax[i - 1]) / initialGuess.dt[i]);
+    initialGuess.ay.push_back((initialGuess.ay[i] - initialGuess.ay[i - 1]) / initialGuess.dt[i]);
+    initialGuess.alpha.push_back((initialGuess.omega[i] - initialGuess.omega[i - 1]) / initialGuess.dt[i]);
+  }
+  
   return initialGuess;
 }
 
