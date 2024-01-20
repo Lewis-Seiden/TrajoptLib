@@ -55,6 +55,7 @@ class SwervePathBuilderImpl {
                              double radius);
 
   HolonomicTrajectory generate() const;
+  HolonomicTrajectory generate_initial_guess() const;
   void cancel_all();
 
   SwervePathBuilderImpl() = default;

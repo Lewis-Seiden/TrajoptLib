@@ -155,6 +155,7 @@ mod ffi {
         );
 
         fn generate(self: &SwervePathBuilderImpl) -> Result<HolonomicTrajectory>;
+        fn generate_initial_guess(self: &SwervePathBuilderImpl) -> Result<HolonomicTrajectory>;
 
         fn new_swerve_path_builder_impl() -> UniquePtr<SwervePathBuilderImpl>;
     }
@@ -366,7 +367,16 @@ impl SwervePathBuilder {
     }
 
     pub fn generate(&self) -> Result<HolonomicTrajectory, String> {
+        println!("generate start rust");
         match self.path.generate() {
+            Ok(traj) => Ok(traj),
+            Err(msg) => Err(msg.what().to_string()),
+        }
+    }
+
+    pub fn generate_initial_guess(&self) -> Result<HolonomicTrajectory, String> {
+        println!("generate test guess");
+        match self.path.generate_initial_guess() {
             Ok(traj) => Ok(traj),
             Err(msg) => Err(msg.what().to_string()),
         }

@@ -1,6 +1,7 @@
 use trajoptlib::{SwerveDrivetrain, SwerveModule, SwervePathBuilder};
 
 fn main() {
+    println!("start test");
     let drivetrain = SwerveDrivetrain {
         mass: 45.0,
         moi: 6.0,
@@ -46,5 +47,8 @@ fn main() {
     path.wpt_angular_velocity(0, 0.0);
     path.wpt_angular_velocity(1, 0.0);
     path.sgmt_circle_obstacle(0, 1, 0.5, 0.0, 0.2);
+    println!("finish path builder config");
+    println!("{:?}", path.generate_initial_guess());
+    println!("actual generate");
     println!("{:?}", path.generate());
 }

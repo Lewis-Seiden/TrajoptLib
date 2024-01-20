@@ -246,7 +246,7 @@ class TRAJOPT_DLLEXPORT SwervePathBuilder {
    *
    * @return the initial guess, as a solution
    */
-  Solution CalculateInitialGuess() const;
+  HolonomicSolution CalculateInitialGuess() const;
 
  private:
   SwervePath path;

@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include <fmt/format.h>
 
@@ -22,6 +23,7 @@ namespace trajopt {
 template <typename Expr, typename Opti>
   requires OptiSys<Expr, Opti>
 SwerveSolution SwerveDiscreteOptimal<Expr, Opti>::Generate() {
+  std::cout << "start generate\n";
   try {
     opti.Solve();
     return ConstructSwerveSolution(opti, x, y, theta, vx, vy, omega, ax, ay,
@@ -36,7 +38,7 @@ template <typename Expr, typename Opti>
   requires OptiSys<Expr, Opti>
 SwerveDiscreteOptimal<Expr, Opti>::SwerveDiscreteOptimal(
     const SwervePath& path, const std::vector<size_t>& N,
-    const Solution& initialGuess)
+    const HolonomicSolution& initialGuess)
     : path(path), N(N) {
   size_t wptCnt = 1 + N.size();
   size_t sgmtCnt = N.size();
@@ -145,6 +147,6 @@ SwerveDiscreteOptimal<Expr, Opti>::SwerveDiscreteOptimal(
     }
   }
 
-  ApplyInitialGuess(opti, initialGuess, x, y, theta);
+  ApplyInitialGuess(opti, initialGuess, x, y, theta, vx, vy, omega, ax, ay, alpha);
 }
 }  // namespace trajopt

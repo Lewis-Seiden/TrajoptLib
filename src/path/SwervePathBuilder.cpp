@@ -6,6 +6,7 @@
 #include <memory>
 #include <stdexcept>
 #include <vector>
+#include <iostream>
 
 #include "optimization/Cancellation.h"
 #include "optimization/TrajoptUtil.h"
@@ -24,7 +25,7 @@
 #include "trajopt/set/IntervalSet1d.h"
 #include "trajopt/set/LinearSet2d.h"
 #include "trajopt/set/RectangularSet2d.h"
-#include "trajopt/solution/Solution.h"
+#include "trajopt/solution/HolonomicSolution.h"
 
 namespace trajopt {
 
@@ -33,6 +34,7 @@ const SwervePath& SwervePathBuilder::GetPath() const {
 }
 
 void SwervePathBuilder::SetDrivetrain(SwerveDrivetrain drivetrain) {
+  std::cout << "set dt";
   path.drivetrain = std::move(drivetrain);
 }
 
@@ -179,7 +181,8 @@ const std::vector<size_t>& SwervePathBuilder::GetControlIntervalCounts() const {
   return controlIntervalCounts;
 }
 
-Solution SwervePathBuilder::CalculateInitialGuess() const {
+HolonomicSolution SwervePathBuilder::CalculateInitialGuess() const {
+  std::cout << "calc guess";
   return GenerateLinearInitialGuess(initialGuessPoints, controlIntervalCounts);
 }
 

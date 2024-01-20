@@ -10,6 +10,7 @@
 #include <utility>
 #include <variant>
 #include <vector>
+#include <iostream>
 
 #include "DebugOptions.h"
 #include "optimization/TrajoptUtil.h"
@@ -26,6 +27,8 @@
 #include "trajopt/set/LinearSet2d.h"
 #include "trajopt/set/RectangularSet2d.h"
 #include "trajopt/set/Set2d.h"
+#include "trajopt/solution/SolutionChecking.h"
+#include "trajopt/solution/HolonomicSolution.h"
 
 namespace trajopt {
 
@@ -274,6 +277,7 @@ inline void append_vector(std::vector<T>& base,
 HolonomicSolution GenerateLinearInitialGuess(
     const std::vector<std::vector<InitialGuessPoint>>& initialGuessPoints,
     const std::vector<size_t> controlIntervalCounts) {
+  std::cout << "init initial guess\n";
   size_t wptCnt = controlIntervalCounts.size() + 1;
   size_t sampTot = GetIdx(controlIntervalCounts, wptCnt, 0);
   HolonomicSolution initialGuess{};
@@ -348,34 +352,43 @@ HolonomicSolution GenerateLinearInitialGuess(
               initialGuessPoints.at(wptIdx).back().heading, N_lastGuessSgmt));
     }
   }
+  std::cout << "Position inits";
 
   // generate initial velocity guess
   for (size_t i = 1; i < initialGuess.x.size(); i++) {
-    initialGuess.vx.push_back((initialGuess.x[i] - initialGuess.x[i - 1]) / initialGuess.dt[i]);
-    initialGuess.vy.push_back((initialGuess.y[i] - initialGuess.y[i - 1]) / initialGuess.dt[i]);
-    initialGuess.omega.push_back((initialGuess.theta[i] - initialGuess.theta[i - 1]) / initialGuess.dt[i]);
+    initialGuess.vx.push_back(0.0);//(initialGuess.x[i] - initialGuess.x[i - 1]) / initialGuess.dt[i]);
+    initialGuess.vy.push_back(0.0);//(initialGuess.y[i] - initialGuess.y[i - 1]) / initialGuess.dt[i]);
+    initialGuess.omega.push_back(0.0);//(initialGuess.theta[i] - initialGuess.theta[i - 1]) / initialGuess.dt[i]);
   }
+  std::cout << "Vel inits";
 
   // generate initial acceleration guess
   for (size_t i = 1; i < initialGuess.x.size(); i++) {
-    initialGuess.ax.push_back((initialGuess.vx[i] - initialGuess.vx[i - 1]) / initialGuess.dt[i]);
-    initialGuess.ay.push_back((initialGuess.vy[i] - initialGuess.vy[i - 1]) / initialGuess.dt[i]);
-    initialGuess.alpha.push_back((initialGuess.omega[i] - initialGuess.omega[i - 1]) / initialGuess.dt[i]);
+    initialGuess.ax.push_back(0.0);//(initialGuess.vx[i] - initialGuess.vx[i - 1]) / initialGuess.dt[i]);
+    initialGuess.ay.push_back(0.0);//(initialGuess.vy[i] - initialGuess.vy[i - 1]) / initialGuess.dt[i]);
+    initialGuess.alpha.push_back(0.0);//(initialGuess.omega[i] - initialGuess.omega[i - 1]) / initialGuess.dt[i]);
   }
+  std::cout << "Accel inits";
   
   return initialGuess;
 }
 
 template <typename Expr, typename Opti>
   requires OptiSys<Expr, Opti>
-void ApplyInitialGuess(Opti& opti, const Solution& solution,
+void ApplyInitialGuess(Opti& opti, const HolonomicSolution& solution,
                        std::vector<Expr>& x, std::vector<Expr>& y,
-                       std::vector<Expr>& theta) {
+                       std::vector<Expr>& theta, std::vector<Expr>& vx, std::vector<Expr>& vy, std::vector<Expr>& omega, std::vector<Expr>& ax, std::vector<Expr>& ay, std::vector<Expr>& alpha) {
   size_t sampleTotal = x.size();
   for (size_t sampleIndex = 0; sampleIndex < sampleTotal; sampleIndex++) {
     opti.SetInitial(x[sampleIndex], solution.x[sampleIndex]);
     opti.SetInitial(y[sampleIndex], solution.y[sampleIndex]);
     opti.SetInitial(theta[sampleIndex], solution.theta[sampleIndex]);
+    opti.SetInitial(vx[sampleIndex], solution.vx[sampleIndex]);
+    opti.SetInitial(vy[sampleIndex], solution.vy[sampleIndex]);
+    opti.SetInitial(omega[sampleIndex], solution.omega[sampleIndex]);
+    opti.SetInitial(ax[sampleIndex], solution.ax[sampleIndex]);
+    opti.SetInitial(ay[sampleIndex], solution.ay[sampleIndex]);
+    opti.SetInitial(alpha[sampleIndex], solution.alpha[sampleIndex]);
   }
 }
 

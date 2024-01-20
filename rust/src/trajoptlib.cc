@@ -258,6 +258,12 @@ HolonomicTrajectory SwervePathBuilderImpl::generate() const {
     trajopt::HolonomicTrajectory{trajopt::OptimalTrajectoryGenerator::Generate(path)});
 }
 
+HolonomicTrajectory SwervePathBuilderImpl::generate_initial_guess() const {
+  return _convert_holonomic_trajectory(
+    trajopt::HolonomicTrajectory{path.CalculateInitialGuess()}
+  );
+}
+
 std::unique_ptr<SwervePathBuilderImpl> new_swerve_path_builder_impl() {
   return std::make_unique<SwervePathBuilderImpl>(SwervePathBuilderImpl());
 }

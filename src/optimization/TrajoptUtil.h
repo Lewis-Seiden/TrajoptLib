@@ -11,7 +11,7 @@
 #include "trajopt/path/Path.h"
 #include "trajopt/set/IntervalSet1d.h"
 #include "trajopt/set/Set2d.h"
-#include "trajopt/solution/Solution.h"
+#include "trajopt/solution/HolonomicSolution.h"
 
 namespace trajopt {
 
@@ -97,9 +97,9 @@ inline HolonomicSolution GenerateLinearInitialGuess(
 
 template <typename Expr, typename Opti>
   requires OptiSys<Expr, Opti>
-static void ApplyInitialGuess(Opti& opti, const Solution& solution,
+static void ApplyInitialGuess(Opti& opti, const HolonomicSolution& solution,
                               std::vector<Expr>& x, std::vector<Expr>& y,
-                              std::vector<Expr>& theta);
+                              std::vector<Expr>& theta, std::vector<Expr>& vx, std::vector<Expr>& vy, std::vector<Expr>& omega, std::vector<Expr>& ax, std::vector<Expr>& ay, std::vector<Expr>& alpha);
 }  // namespace trajopt
 
 #include "optimization/TrajoptUtil.inc"
