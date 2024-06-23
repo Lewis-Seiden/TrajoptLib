@@ -1,29 +1,16 @@
 // Copyright (c) TrajoptLib contributors
 
-#include "trajopt/OptimalTrajectoryGenerator.h"
+#include "trajopt/OptimalTrajectoryGenerator.hpp"
 
-#include "trajopt/path/SwervePathBuilder.h"
-
-#if defined(OPTIMIZER_BACKEND_CASADI)
-#include "optimization/CasADiOpti.h"
-#define _OPTI_BACKEND casadi::MX, CasADiOpti
-#elif defined(OPTIMIZER_BACKEND_SLEIPNIR)
-#include "optimization/SleipnirOpti.h"
-#define _OPTI_BACKEND SleipnirExpr, SleipnirOpti
-#endif
-#include "DebugOptions.h"
-#include "trajopt/InvalidPathException.h"
-#include "trajopt/drivetrain/SwerveDrivetrain.h"
-#include "optimization/algorithms/SwerveDiscreteOptimal.h"
-#include "trajopt/solution/SwerveSolution.h"
+#include "optimization/algorithms/SwerveDiscreteOptimal.hpp"
 
 namespace trajopt {
 
-SwerveSolution OptimalTrajectoryGenerator::Generate(
-    const SwervePathBuilder& path) {
-  SwerveDiscreteOptimal<_OPTI_BACKEND> problem(path.GetPath(),
-                                               path.GetControlIntervalCounts(),
-                                               path.CalculateInitialGuess());
-  return problem.Generate();
+expected<SwerveSolution, std::string> OptimalTrajectoryGenerator::Generate(
+    const SwervePathBuilder& path, bool diagnostics, int64_t handle) {
+  SwerveDiscreteOptimal problem(path.GetPath(), path.GetControlIntervalCounts(),
+                                path.CalculateInitialGuess(), handle);
+  return problem.Generate(diagnostics);
 }
+
 }  // namespace trajopt
