@@ -37,6 +37,8 @@ class SwervePathBuilderImpl {
   void wpt_x(size_t idx, double x);
   void wpt_y(size_t idx, double y);
   void wpt_heading(size_t idx, double heading);
+  void wpt_center_keep_in(size_t idx, double x1, double y1, double x2, double y2);
+  void wpt_bumpers_keep_in(size_t idx, double x1, double y1, double x2, double y2);
   void wpt_point_at(size_t idx, double field_point_x, double field_point_y,
                     double heading_tolerance);
 
@@ -55,7 +57,8 @@ class SwervePathBuilderImpl {
   void sgmt_heading(size_t from_idx, size_t to_idx, double heading);
   void sgmt_point_at(size_t from_idx, size_t to_idx, double field_point_x,
                      double field_point_y, double heading_tolerance);
-
+  void sgmt_center_keep_in(size_t from_idx, size_t to_idx, double x1, double y1, double x2, double y2);
+  void sgmt_bumpers_keep_in(size_t from_idx, size_t to_idx, double x1, double y1, double x2, double y2);
   void sgmt_circle_obstacle(size_t from_idx, size_t to_idx, double x, double y,
                             double radius);
   void sgmt_polygon_obstacle(size_t from_idx, size_t to_idx,

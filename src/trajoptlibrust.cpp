@@ -140,6 +140,24 @@ void SwervePathBuilderImpl::wpt_angular_velocity_max_magnitude(
   path.WptAngularVelocityMaxMagnitude(idx, angular_velocity);
 }
 
+void SwervePathBuilderImpl::wpt_center_keep_in(size_t idx, double x1, double y1, double x2, double y2) {
+  path.WptCenterKeepIn(idx, 
+    trajopt::RectangularSet2d{
+      trajopt::IntervalSet1d(x1, x2),
+      trajopt::IntervalSet1d(y1, y2)
+    }
+  );
+}
+
+void SwervePathBuilderImpl::wpt_bumpers_keep_in(size_t idx, double x1, double y1, double x2, double y2) {
+  path.WptBumpersKeepIn(idx, 
+    trajopt::RectangularSet2d{
+      trajopt::IntervalSet1d(x1, x2),
+      trajopt::IntervalSet1d(y1, y2)
+    }
+  );
+}
+
 void SwervePathBuilderImpl::wpt_x(size_t idx, double x) {
   path.WptConstraint(idx,
                      trajopt::TranslationConstraint{trajopt::RectangularSet2d{
@@ -225,6 +243,24 @@ void SwervePathBuilderImpl::sgmt_point_at(size_t from_idx, size_t to_idx,
                       trajopt::PointAtConstraint{
                           trajopt::Translation2d{field_point_x, field_point_y},
                           heading_tolerance});
+}
+
+void SwervePathBuilderImpl::sgmt_center_keep_in(size_t from_idx, size_t to_idx, double x1, double y1, double x2, double y2) {
+  path.SgmtCenterKeepIn(from_idx, to_idx, 
+    trajopt::RectangularSet2d{
+      trajopt::IntervalSet1d(x1, x2),
+      trajopt::IntervalSet1d(y1, y2)
+    }
+  );
+}
+
+void SwervePathBuilderImpl::sgmt_bumpers_keep_in(size_t from_idx, size_t to_idx, double x1, double y1, double x2, double y2) {
+  path.SgmtBumpersKeepIn(from_idx, to_idx, 
+    trajopt::RectangularSet2d{
+      trajopt::IntervalSet1d(x1, x2),
+      trajopt::IntervalSet1d(y1, y2)
+    }
+  );
 }
 
 void SwervePathBuilderImpl::sgmt_circle_obstacle(size_t from_idx, size_t to_idx,

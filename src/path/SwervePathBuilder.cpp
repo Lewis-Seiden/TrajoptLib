@@ -113,7 +113,7 @@ void SwervePathBuilder::WptBumpersKeepIn(size_t idx, Set2d zone) {
   for (auto& _bumpers : bumpers) {
     std::vector<HolonomicConstraint> constraints;
     for (auto& corner : _bumpers.points) {
-      constraints.emplace_back(TranslationConstraint{zone, corner.x, corner.y});
+      constraints.emplace_back(TranslationConstraint{zone, corner.X(), corner.Y()});
     }
     for (auto& constraint : constraints) {
       WptConstraint(idx, constraint);
@@ -170,7 +170,7 @@ void SwervePathBuilder::SgmtBumpersKeepIn(size_t fromIdx, size_t toIdx, Set2d zo
   for (auto& _bumpers : bumpers) {
     std::vector<HolonomicConstraint> constraints;
     for (auto& corner : _bumpers.points) {
-      constraints.emplace_back(TranslationConstraint{zone, corner.x, corner.y});
+      constraints.emplace_back(TranslationConstraint{zone, corner.X(), corner.Y()});
     }
     for (auto& constraint : constraints) {
       SgmtConstraint(fromIdx, toIdx, constraint);

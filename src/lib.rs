@@ -105,6 +105,8 @@ mod ffi {
             idx: usize,
             angular_velocity: f64,
         );
+        fn wpt_center_keep_in(self: Pin<&mut SwervePathBuilderImpl>, idx: usize, x1: f64, y1: f64, x2: f64, y2: f64);
+        fn wpt_bumpers_keep_in(self: Pin<&mut SwervePathBuilderImpl>, idx: usize, x1: f64, y1: f64, x2: f64, y2: f64);
         fn wpt_x(self: Pin<&mut SwervePathBuilderImpl>, idx: usize, x: f64);
         fn wpt_y(self: Pin<&mut SwervePathBuilderImpl>, idx: usize, y: f64);
         fn wpt_heading(self: Pin<&mut SwervePathBuilderImpl>, idx: usize, heading: f64);
@@ -163,7 +165,8 @@ mod ffi {
             field_point_y: f64,
             heading_tolerance: f64,
         );
-
+        fn sgmt_center_keep_in(self: Pin<&mut SwervePathBuilderImpl>, from_idx: usize, to_idx: usize, x1: f64, y1: f64, x2: f64, y2: f64);
+        fn sgmt_bumpers_keep_in(self: Pin<&mut SwervePathBuilderImpl>, from_idx: usize, to_idx: usize, x1: f64, y1: f64, x2: f64, y2: f64);
         fn sgmt_circle_obstacle(
             self: Pin<&mut SwervePathBuilderImpl>,
             from_idx: usize,
@@ -296,6 +299,14 @@ impl SwervePathBuilder {
         );
     }
 
+    pub fn wpt_center_keep_in(&mut self, idx: usize, x1: f64, y1: f64, x2: f64, y2: f64) {
+        crate::ffi::SwervePathBuilderImpl::wpt_center_keep_in(self.path.pin_mut(), idx, x1, y1, x2, y2);
+    }
+
+    pub fn wpt_bumpers_keep_in(&mut self, idx: usize, x1: f64, y1: f64, x2: f64, y2: f64) {
+        crate::ffi::SwervePathBuilderImpl::wpt_bumpers_keep_in(self.path.pin_mut(), idx, x1, y1, x2, y2);
+    }
+
     pub fn wpt_x(&mut self, idx: usize, x: f64) {
         crate::ffi::SwervePathBuilderImpl::wpt_x(self.path.pin_mut(), idx, x);
     }
@@ -419,6 +430,14 @@ impl SwervePathBuilder {
             field_point_y,
             heading_tolerance,
         )
+    }
+
+    pub fn sgmt_center_keep_in(&mut self, from_idx: usize, to_idx: usize, x1: f64, y1: f64, x2: f64, y2: f64) {
+        crate::ffi::SwervePathBuilderImpl::sgmt_center_keep_in(self.path.pin_mut(), from_idx, to_idx, x1, y1, x2, y2);
+    }
+
+    pub fn sgmt_bumpers_keep_in(&mut self, from_idx: usize, to_idx: usize, x1: f64, y1: f64, x2: f64, y2: f64) {
+        crate::ffi::SwervePathBuilderImpl::sgmt_bumpers_keep_in(self.path.pin_mut(), from_idx, to_idx, x1, y1, x2, y2);
     }
 
     pub fn sgmt_circle_obstacle(
